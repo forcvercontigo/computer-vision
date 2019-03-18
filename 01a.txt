@@ -1,0 +1,6 @@
+1.Since there may be serval tables,we can uss a loop to detect.
+2.In each loop,firstly find countours in the images.
+3.Then,find the max contour in contours and use a rectangle to 
+cover it.
+4.Extract this rectangle and save to 'cut.png'.
+5.Fill the rectangel area with background color and save.
