@@ -1,0 +1,2 @@
+1.DIlate and erosion and dilate 4 times,words connect each other.
+2.Find the contours and use a rectangle to represent the area
