@@ -2,32 +2,6 @@
 
 import numpy as np
 import cv2
-#  detect vertical line
-def VerticalLineDetect(origin,gray):
-     # Canny edge detection
-      edges = cv2.Canny(gray, 30, 240)
-      minLineLength = 1
-      maxLineGap = 100
-      l = []
-      l = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength, maxLineGap)
-      if l.any():
-            lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength, maxLineGap).tolist()
-      else:
-            return False
-      sorted_lines = sorted(lines, key=lambda x: x[0])
-      # 纵向直线列表
-      vertical_lines = []
-      for line in sorted_lines:
-            for x1, y1, x2, y2 in line:
-                # 在图片上绘制纵向直线
-                if abs(x1 - x2)<5:
-                        print(line)
-                        vertical_lines.append((x1, y1, x2, y2))
-                        cv2.line(origin, (x1, y1), (x2, y2), (0, 255, 0), 10)
-      if vertical_lines:
-            return True
-      else:
-            return False
 def image_preprocess(image):
       # convert to grayscale 
       gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -37,6 +11,8 @@ def image_preprocess(image):
       kernel = np.ones((3, 3), np.uint8)
       dilated = cv2.dilate(threshold, kernel, iterations=1)    
       return dilated
+
+
 def findtable(origin, image,count):
       # detect contours
       _,contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -81,6 +57,35 @@ def findtable(origin, image,count):
       cv2.destroyAllWindows()
       return True
 
+#  detect vertical line
+def VerticalLineDetect(origin,gray):
+     # Canny edge detection
+      edges = cv2.Canny(gray, 30, 240)
+      minLineLength = 1
+      maxLineGap = 100
+      l = []
+      l = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength, maxLineGap)
+      if l.any():
+            lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength, maxLineGap).tolist()
+      else:
+            return False
+      sorted_lines = sorted(lines, key=lambda x: x[0])
+      
+      vertical_lines = []
+      for line in sorted_lines:
+            for x1, y1, x2, y2 in line:
+                # draw line
+                if abs(x1 - x2)<5:
+                        print(line)
+                        vertical_lines.append((x1, y1, x2, y2))
+                        cv2.line(origin, (x1, y1), (x2, y2), (0, 255, 0), 10)
+      if vertical_lines:
+            return True
+      else:
+            return False
+                  
+                  
+                  
 new_img = cv2.imread('q1.png',0)
 cv2.imwrite('new.png',new_img )  
 new = True
