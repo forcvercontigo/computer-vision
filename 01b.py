@@ -1,15 +1,5 @@
 import cv2
 import numpy as np
-
-
-def detect(img):
-    #1.convert to grayscale 
-    copy = img
-    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    #morphology transfer
-    dilation = preprocess(gray)
-    #searching for text
-    region = findTextRegion(copy,dilation)
 def preprocess(gray):
     #1.sobel
     sobel = cv2.Sobel(gray,cv2.CV_8U,1,0,ksize = 3)
@@ -36,21 +26,16 @@ def findTextRegion(copy,img):
     cv2.imshow('boundary',copy)
     cv2.imwrite('contours.png',copy)
     cv2.waitKey(0)
+
+def detect(img):
+    #1.convert to grayscale 
+    copy = img
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    #morphology transfer
+    dilation = preprocess(gray)
+    #searching for text
+    region = findTextRegion(copy,dilation)
+
+
 img = cv2.imread('q2.png')
 detect(img)   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
