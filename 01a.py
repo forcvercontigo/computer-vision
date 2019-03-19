@@ -37,7 +37,7 @@ def image_preprocess(image):
       kernel = np.ones((3, 3), np.uint8)
       dilated = cv2.dilate(threshold, kernel, iterations=1)    
       return dilated
-def findtable(origin, image):
+def findtable(origin, image,count):
       # detect contours
       _,contours, hierarchy = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
       if not contours:
@@ -68,7 +68,7 @@ def findtable(origin, image):
       newImage = origin.copy()
       table = newImage[miny:maxy, minx:maxx]
       print('table')
-      cv2.imwrite('cut.png', table)
+      cv2.imwrite('cut'+str(count)+.png', table)
       cut = cv2.imread('cut.png')
       cv2.imshow('cut',cut)
       cv2.waitKey(0)
@@ -84,12 +84,14 @@ def findtable(origin, image):
 new_img = cv2.imread('q1.png',0)
 cv2.imwrite('new.png',new_img )  
 new = True
+count = 0
 #find the table and remove it and continue to search for table
 while new :
       new_img = cv2.imread('new.png')
       origin_image = new_img.copy()
       processed_image = image_preprocess(new_img)
-      new = findtable(origin_image, processed_image)
+      new = findtable(origin_image, processed_image,count)
+      count+=1
       if not VerticalLineDetect(new_img.copy(),new_img):
             break
 
